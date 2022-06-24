@@ -20,7 +20,7 @@ if __name__ == "__main__":
     char_rule_loader = ItemRuleLoader("character_detail.txt")
 
     def handle_single_char(character, fp):
-        grader_1 = ItemGrader(char_rule_loader.char_rule_map[character], char_rule_loader.char_hash_map[character])
+        grader_1 = ItemGrader(char_rule_loader.char_rule_map[character], char_rule_loader.char_hash_map[character], poss_loader)
         pa_layer_1 = PaLayer(poss_loader, grader_1)
         ps_layer_1 = PsLayer(poss_loader, pa_layer=pa_layer_1, MAX_T=20001)
         p_layer_1 = PLayer41(poss_loader, ps_layer_1, single_piece_Q=10, target_t_list=[35, 70, 140, 140*2, 140*3, 140*6, 140*12])

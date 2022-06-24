@@ -5,10 +5,6 @@ from utils import *
 from valid_sub_attr_grader import *
 
 
-        
-
-
-
 class PossLoader:
 
     def __init__(self, drop_poss_path, item_poss_path):
@@ -75,18 +71,5 @@ class PossLoader:
             sub_attr_map[sub_attr_name] = sub_attr_num[idx]
         return ItemDetail(item_pos, main_attr, sub_attr_map, base_sub_attr_num)
         
-        
-if __name__ == "__main__":
-    poss_loader = PossLoader("drop_possibility_unicode.csv", "item_possibility_unicode.csv")
-    poss_loader.check_print()
-
-    char_rule_loader = ItemRuleLoader("character_detail.txt")
-    grader = ItemGrader(char_rule_loader.char_rule_map["雷电将军"], char_rule_loader.char_hash_map["雷电将军"])
-
-    for i in range(10):
-        new_item = poss_loader.random_draw()
-        new_item.check_print()
-        score = grader.grade(new_item)
-        print("对雷电将军评分:{}".format(score))
 
         

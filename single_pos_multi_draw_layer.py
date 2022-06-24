@@ -57,7 +57,7 @@ class PsLayer:
 
         
         with open(self.cache_path(), "w", encoding="utf8") as fout:
-            fout.write(json.dumps(self.item_sub_t_poss))
+            fout.write(json.dumps(self.item_sub_t_poss, indent=4, ensure_ascii=False))
 
         print("单个部位多抽最优副次条数量概率分布预计算完成")
 

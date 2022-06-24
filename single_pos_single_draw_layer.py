@@ -60,17 +60,10 @@ class PaLayer:
                     self.item_sub_num[item_pos][str(i*0.5)] += temp_item_sub_num[str(i*0.5)] * current_main_attr_poss
         
         with open(self.cache_path(), "w", encoding="utf8") as fout:
-            fout.write(json.dumps(self.item_sub_num))
+            fout.write(json.dumps(self.item_sub_num, indent=4, ensure_ascii=False))
 
         print("所有部位单个圣遗物副次条期望预计算完成")
 
     
     def draw(self, item_pos):
         return random_choice_one_among_poss_map(self.item_sub_num[item_pos])
-
-
-if __name__ == "__main__":
-    poss_loader = PossLoader("drop_possibility_unicode.csv", "item_possibility_unicode.csv")
-    char_rule_loader = ItemRuleLoader("character_detail.txt")
-    grader = ItemGrader(char_rule_loader.char_rule_map["雷电将军"], char_rule_loader.char_hash_map["雷电将军"])
-    pa_layer = PaLayer(poss_loader, grader)

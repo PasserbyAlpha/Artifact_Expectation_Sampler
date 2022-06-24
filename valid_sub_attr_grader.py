@@ -55,10 +55,11 @@ class ItemRuleLoader:
 
 class ItemGrader:
 
-    def __init__(self, char_rule_map, rule_hash):
+    def __init__(self, char_rule_map, rule_hash, poss_loader):
         # 假定评分字典是副次条=>评分的映射
         self.main_rule_map, self.sub_rule_map = char_rule_map
         self.rule_hash = rule_hash
+        self.poss_loader = poss_loader
 
 
     def should_see_full_sub_attr(self, new_item):
@@ -72,11 +73,19 @@ class ItemGrader:
         # 默认是要求大词条总计1.99分以上有效词条（即0.5词条此时暂时算0分）
         # 可以通过设置词条权重为0.99在不影响词条评分的情况下影响赌词条逻辑
         # （例如攻双暴充，要求最起码单暴+攻/充，或者攻充精双爆要有单暴或者攻充精全齐）
+        # (特别的，为了解决有效词条太少的角色没有足够的词条，如果副词条已经出现了主词条以外所有有效词条则也要+20)
+
+        # 主副词条情况特判
+        max_sub_type_score = 0
+        for sub_attr_name, sub_attr_weight in self.sub_rule_map.items():
+            if sub_attr_weight > 0.75 and self.poss_loader.sub_attr_poss_map[new_item.main_attr][sub_attr_name] > 0:
+                max_sub_type_score += sub_attr_weight
+
         valid_sub_attr_base_num = 0
         for sub_attr_name, sub_attr_num in new_item.sub_attr_map.items():
             if self.sub_rule_map.get(sub_attr_name, 0) > 0.5:
                 valid_sub_attr_base_num += self.sub_rule_map.get(sub_attr_name, 0)
-        return valid_sub_attr_base_num >= 1.99
+        return valid_sub_attr_base_num >= min(1.99, max_sub_type_score)
 
     def grade(self, new_item):
         # 检查主词条
