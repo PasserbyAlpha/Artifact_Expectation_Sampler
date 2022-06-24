@@ -23,7 +23,7 @@ if __name__ == "__main__":
         grader_1 = ItemGrader(char_rule_loader.char_rule_map[character], char_rule_loader.char_hash_map[character], poss_loader)
         pa_layer_1 = PaLayer(poss_loader, grader_1)
         ps_layer_1 = PsLayer(poss_loader, pa_layer=pa_layer_1, MAX_T=20001)
-        p_layer_1 = PLayer41(poss_loader, ps_layer_1, single_piece_Q=10, target_t_list=[35, 70, 140, 140*2, 140*3, 140*6, 140*12])
+        p_layer_1 = PLayer41(poss_loader, ps_layer_1, single_piece_Q=5, target_t_list=[27, 54, 108, 54*3, 108*2, 108*3, 108*6, 108*12])
 
         double_write(fp, character)
         double_write(fp, json.dumps(p_layer_1.get_expectation(), indent=4, ensure_ascii=False))
